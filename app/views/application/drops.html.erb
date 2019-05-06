@@ -1,0 +1,25 @@
+<table cellspacing="0">
+  <% @drops.each do |drop| %>
+  <tr>
+    <td>
+      <div class="timestamp">
+        <a href="/drop/<%= drop.id %>">
+
+        <%= drop.created_at %>
+        <br/>
+        <%= drop.status %>
+        </a>
+      </div>
+    </td>
+    <td>
+      <div class="thumbnail-pane">
+        <% drop.drop_images.each do |image| %>
+        <img height="200" src="<%= image.filename %>"/>
+        <% end %>
+      </div>
+    </td>
+  </tr>
+  <% end %>
+</table>
+
+

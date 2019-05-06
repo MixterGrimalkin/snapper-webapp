@@ -1,0 +1,27 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  image_location: MyString
+  name: MyString
+  email: MyString
+  twitter: MyString
+  gdpr_text: MyString
+  gdpr_consent: false
+  send_by_email: false
+  sent_at: 2019-05-03 14:12:01
+  share_by_twitter: false
+  tag_twitter_user: false
+  shared_at: 2019-05-03 14:12:01
+
+two:
+  image_location: MyString
+  name: MyString
+  email: MyString
+  twitter: MyString
+  gdpr_text: MyString
+  gdpr_consent: false
+  send_by_email: false
+  sent_at: 2019-05-03 14:12:01
+  share_by_twitter: false
+  tag_twitter_user: false
+  shared_at: 2019-05-03 14:12:01
