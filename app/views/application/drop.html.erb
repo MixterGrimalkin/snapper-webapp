@@ -1,9 +1,66 @@
-<% if @drop %>
-    <h1>Drop <%= @drop.id %></h1>
+<div style="text-align: center">
 
+  <% if @drop %>
+      <h3><%= @drop.created_at %></h3>
+      <div id="single-snap" style="display: none">
+        <img id="primary-snap" height="500"/>
+        <button onclick="clearPrimarySnap();">Choose</button>
+      </div>
+      <div id="multi-snap" style="display: none">
+        <h3>Click an image to select as primary:</h3>
+        <% @drop.snaps.each do |image| %>
+            <img id="snap-<%= image.id %>" onclick="selectPrimarySnap(<%= image.id %>);" height="300" src="../<%= image.filename %>"/>
+        <% end %>
+      </div>
 
-<% else %>
-    <h1>No drop found</h1>
+      <%= form_tag("/drop/#{@drop.id}/save", method: "POST") do %>
+          <%= label_tag(:name, "Name:") %>
+          <%= text_field_tag(:name, @drop.name) %>
+          <%= hidden_field_tag(:new_primary_snap_id, nil) %>
+          <%= submit_tag("Save") %>
+      <% end %>
 
+  <% else %>
+      <h1>No drop found</h1>
+  <% end %>
+</div>
 
-<% end %>
+<script>
+
+  var primarySnapSelected = <%= @drop.primary_snap ? 'true' : 'false' %>;
+  var primarySnapSrc = '<%= @drop.primary_snap ? "../#{@drop.primary_snap.filename}" : '' %>';
+  var primarySnapId = '<%= @drop.primary_snap ? @drop.primary_snap.id : 'null' %>';
+
+  $(function () {
+    updateSnapPane();
+  });
+
+  function updateSnapPane() {
+    if (primarySnapSelected) {
+      $("#primary-snap").attr("src", primarySnapSrc);
+      $("#multi-snap").hide();
+      $("#single-snap").show();
+    } else {
+      $("#single-snap").hide();
+      $("#multi-snap").show();
+    }
+  }
+
+  function clearPrimarySnap() {
+    primarySnapId = null;
+    primarySnapSrc = "";
+    primarySnapSelected = false;
+    updateSnapPane();
+  }
+
+  function selectPrimarySnap(id) {
+    primarySnapId = id;
+    primarySnapSrc = $("#snap-" + id).attr("src");
+    $("#new_primary_snap_id").val(id);
+    primarySnapSelected = true;
+    console.log(primarySnapSrc);
+    updateSnapPane();
+
+  }
+
+</script>

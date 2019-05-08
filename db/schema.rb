@@ -10,12 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190506104818) do
-
-  create_table "drop_images", force: :cascade do |t|
-    t.integer "drop_id"
-    t.string "filename"
-  end
+ActiveRecord::Schema.define(version: 20190508143000) do
 
   create_table "drops", force: :cascade do |t|
     t.string "image_location"
@@ -29,9 +24,17 @@ ActiveRecord::Schema.define(version: 20190506104818) do
     t.boolean "share_by_twitter"
     t.boolean "tag_twitter_user"
     t.datetime "shared_at"
+    t.string "status"
+    t.integer "primary_snap_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "status"
+  end
+
+  create_table "snaps", force: :cascade do |t|
+    t.integer "drop_id"
+    t.string "filename"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
 end

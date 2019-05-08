@@ -12,6 +12,8 @@ class CreateDrops < ActiveRecord::Migration[5.1]
       t.boolean :share_by_twitter
       t.boolean :tag_twitter_user
       t.timestamp :shared_at
+      t.string :status
+      t.integer :primary_snap_id
 
       t.timestamps
     end

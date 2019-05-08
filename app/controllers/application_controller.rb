@@ -30,8 +30,17 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def not_found
-    raise ActionController::RoutingError.new('Not Found')
+  def save_drop
+    puts params
+
+    drop = Drop.find(params[:id])
+    drop.name = params[:name]
+    if (snap_id = params[:new_primary_snap_id].to_i) > 0
+      drop.primary_snap = Snap.find snap_id
+    end
+    drop.save
+
+    redirect_to "/drop/#{params[:id]}"
   end
 
 end

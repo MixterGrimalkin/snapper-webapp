@@ -3,5 +3,6 @@ Rails.application.routes.draw do
 
   get '/' => 'application#drops'
   get '/drop/:id' => 'application#drop'
+  post '/drop/:id/save' => 'application#save_drop'
 
 end
