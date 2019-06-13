@@ -4,6 +4,20 @@ class ApplicationController < ActionController::Base
 
   PAGE_SIZE = 10
 
+  def last_drop
+    drop = Drop.last
+    @location = drop ? drop.image_location.gsub('public/', '') : ''
+    render 'last_drop.html.erb'
+  end
+
+  def last_drop_image
+    if (@drop = Drop.last)
+      render plain: @drop.image_location.gsub('public/', '')
+    else
+      render plain: ''
+    end
+  end
+
   def drops
     page = 1
     if params[:page]

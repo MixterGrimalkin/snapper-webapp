@@ -1,5 +1,3 @@
-require 'rmagick'
-
 module ApplicationHelper
 
 

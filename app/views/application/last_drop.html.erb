@@ -1,0 +1,23 @@
+<h1>Latest Drop</h1>
+
+<img id="drop" src="<%= @location %>">
+
+<script>
+
+$(function() {
+  setInterval(function(){
+    $.ajax({
+      url: '/last_drop_image',
+      method: 'GET',
+      success: function(resp) {
+        var $img = $("#drop");
+        if ( $img.attr("src") != resp ) {
+          $img.attr("src", resp)
+        }
+      }
+    })
+  }, 1000);
+});
+
+
+</script>
