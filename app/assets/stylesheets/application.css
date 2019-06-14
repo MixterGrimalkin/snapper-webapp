@@ -14,18 +14,25 @@
  *= require_self
  */
 
+body {
+    font-family: sans-serif;
+}
+
 .timestamp {
     font-family: arial, sans-serif;
     font-size: medium;
     background: #7ebcff;
     padding: 3px 10px 3px 10px;
-    /*border: 1px solid grey;*/
     margin: 20px;
 }
 
 .thumbnail-pane {
-    padding: 3px 10px 3px 10px;
+    text-align: center;
+    padding: 3px 3px 3px 3px;
     border: 1px solid grey;
-    height: 100%;
-    margin: 0;
+    border-radius: 3px;
+    margin: 4px;
+    display: inline-block;
+    font-size: smaller;
+    font-family: sans-serif;
 }

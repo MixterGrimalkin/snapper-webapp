@@ -1,23 +1,34 @@
-<h1>Latest Drop</h1>
+<div style="text-align: center">
 
-<img id="drop" src="<%= @location %>">
+  <h1>Greenpeace Drop Slide</h1>
+
+  <div id="connection-warning" style="display: none">ERROR CONNECTING TO WEBAPP!</div>
+  <img id="drop" src="<%= @location %>">
+
+</div>
 
 <script>
 
-$(function() {
-  setInterval(function(){
-    $.ajax({
-      url: '/last_drop_image',
-      method: 'GET',
-      success: function(resp) {
-        var $img = $("#drop");
-        if ( $img.attr("src") != resp ) {
-          $img.attr("src", resp)
+  $(function () {
+    setInterval(function () {
+      $.ajax({
+        url: '/last_drop_image',
+        method: 'GET',
+        success: function (resp) {
+          $("#connection-warning").hide();
+          var $img = $("#drop");
+          $img.show();
+          if ($img.attr("src") != resp) {
+            $img.attr("src", resp)
+          }
+        },
+        error: function (resp) {
+          console.log("arsehole");
+          $("#connection-warning").show();
+          $("#drop").hide();
         }
-      }
-    })
-  }, 1000);
-});
-
+      })
+    }, 1000);
+  });
 
 </script>

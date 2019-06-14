@@ -1,28 +1,61 @@
-<table cellspacing="0">
-  <% @drops.each do |drop| %>
-      <tr>
-        <td>
-          <div class="timestamp">
-            <a href="/drop/<%= drop.id %>">
-              <%= drop.created_at %>
-              <br/>
-              <%= drop.status %>
-            </a>
-          </div>
-        </td>
-        <td>
-          <div class="thumbnail-pane">
-            <% if drop.primary_snap %>
-                <img height="200" src="<%= drop.primary_snap.filename %>"/>
-            <% else %>
-                <% drop.snaps.each do |image| %>
-                    <img height="200" src="<%= image.filename %>"/>
-                <% end %>
-            <% end %>
-          </div>
-        </td>
-      </tr>
-  <% end %>
-</table>
 
+
+<div id="connection-warning" style="display: none">ERROR CONNECTING TO WEBAPP!</div>
+
+<div id="content">
+
+  <div style="text-align: center">
+
+  <h1>Greenpeace Drop Slide</h1>
+
+    <% @drops.each do |drop| %>
+        <a href="/drop/<%= drop.id %>">
+          <div class="thumbnail-pane">
+            <img height="200" src="<%= drop.src %>"/>
+            <br/>
+            <%= drop.created_at %>
+            <br/>
+            <%= drop.status %>
+          </div>
+        </a>
+    <% end %>
+  </div>
+
+  <div style="text-align: center">
+    <% if @page > 1 %>
+        <a class="btn" href="/drops?page=<%= @page-1 %>"><< Prev</a>
+    <% end %>
+    Page <%= @page %> of <%= @pages %>
+    <% if @pages > @page %>
+        <a href="/drops?page=<%= @page+1 %>">Next >></a>
+    <% end %>
+  </div>
+
+</div>
+
+<script>
+  <% if @page==1 %>
+
+  $(function () {
+    setInterval(function () {
+      $.ajax({
+        url: '/last_drop_image',
+        method: 'GET',
+        success: function (resp) {
+          $("#connection-warning").hide();
+          $("#content").show();
+          if (resp != '<%= @last_drop_src %>') {
+            window.location.reload();
+          }
+        },
+        error: function (resp) {
+          $("#connection-warning").show();
+          $("#content").hide();
+        }
+      })
+    }, 1000);
+  });
+
+  <% end %>
+</script>
 

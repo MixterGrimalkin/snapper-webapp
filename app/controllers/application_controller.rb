@@ -2,27 +2,27 @@ require_relative '../helpers/application_helper'
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
-  PAGE_SIZE = 10
+  PAGE_SIZE = 8
 
   def last_drop
     drop = Drop.last
-    @location = drop ? drop.image_location.gsub('public/', '') : ''
+    @location = drop ? drop.src : ''
     render 'last_drop.html.erb'
   end
 
   def last_drop_image
     if (@drop = Drop.last)
-      render plain: @drop.image_location.gsub('public/', '')
+      render plain: @drop.src
     else
       render plain: ''
     end
   end
 
   def drops
-    page = 1
+    @page = 1
     if params[:page]
-      page = params[:page].to_i
-      page = 1 if page == 0
+      @page = params[:page].to_i
+      @page = 1 if @page == 0
     end
 
     drop_query = Drop.order(created_at: :desc)
@@ -31,7 +31,12 @@ class ApplicationController < ActionController::Base
       drop_query = drop_query.where(status: 'PENDING')
     end
 
-    @drops = drop_query.offset((page-1)*PAGE_SIZE).limit(PAGE_SIZE)
+    @pages = (drop_query.count / PAGE_SIZE) + 1
+
+    @drops = drop_query.offset((@page-1)*PAGE_SIZE).limit(PAGE_SIZE)
+
+    last_drop = Drop.last
+    @last_drop_src = last_drop ? last_drop.src : ''
 
     render 'drops.html.erb'
   end
@@ -45,16 +50,22 @@ class ApplicationController < ActionController::Base
   end
 
   def save_drop
-    puts params
-
     drop = Drop.find(params[:id])
     drop.name = params[:name]
-    if (snap_id = params[:new_primary_snap_id].to_i) > 0
-      drop.primary_snap = Snap.find snap_id
-    end
+    drop.email = params[:email]
+    drop.twitter = params[:twitter]
+    drop.send_by_email = params[:send_by_email]
+    drop.share_by_twitter = params[:share_by_twitter]
+    drop.tag_twitter_user = params[:tag_twitter_user]
     drop.save
 
-    redirect_to "/drop/#{params[:id]}"
+    redirect_to "/drops"
+  end
+
+  def discard_drop
+    drop = Drop.find(params[:id])
+    File.delete(drop.image_location)
+    drop.destroy
   end
 
 end
