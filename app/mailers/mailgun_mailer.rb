@@ -3,13 +3,13 @@ class MailgunMailer < ApplicationMailer
 
   def email_image(drop)
     @drop = drop
-    mg_client = Mailgun::Client.new 'd3dc4dde5ac09d66e1b9ac6f21ea0bcc-16ffd509-db2290f2'
+    mg_client = Mailgun::Client.new ENV['MG_KEY']
     message_params = {:from    => 'loki@amarantha.net',
                       :to      => @drop.email,
                       :subject => 'Hello from Greenpeace',
                       :text    => 'You rode the drop slide, wooooooo!'}
     puts message_params
-    mg_client.send_message 'sandboxc53823b453d54323aa1f6bc6eaa532cb.mailgun.org', message_params
+    mg_client.send_message ENV['MG_DOMAIN'], message_params
   end
 
 end
