@@ -31,7 +31,7 @@ class ApplicationController < ActionController::Base
       drop_query = drop_query.where(status: 'PENDING')
     end
 
-    @pages = (drop_query.count / PAGE_SIZE) + 1
+    @pages = (drop_query.count / PAGE_SIZE) + (drop_query.count % PAGE_SIZE == 0 ? 0 : 1)
 
     @drops = drop_query.offset((@page-1)*PAGE_SIZE).limit(PAGE_SIZE)
 
