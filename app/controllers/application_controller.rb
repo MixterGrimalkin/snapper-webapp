@@ -57,7 +57,15 @@ class ApplicationController < ActionController::Base
     drop.send_by_email = params[:send_by_email]
     drop.share_by_twitter = params[:share_by_twitter]
     drop.tag_twitter_user = params[:tag_twitter_user]
+
+    if drop.send_by_email
+      drop.send_email
+      drop.sent_at = DateTime.now
+      drop.status = 'COMPLETE'
+    end
+
     drop.save
+
 
     redirect_to "/drops"
   end
