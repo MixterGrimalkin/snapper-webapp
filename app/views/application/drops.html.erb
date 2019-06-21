@@ -23,12 +23,19 @@
       <p>No drops found</p>
     <% else %>
         <% if @page > 1 %>
-            <a class="btn" href="/drops?page=<%= @page-1 %>"><< Prev</a>
+            <a class="btn btn-default" href="/drops?page=<%= "#{@page-1}#{@show_all ? '&show_all=true' : ''}" %>">< Prev</a>
         <% end %>
-        Page <%= @page %> of <%= @pages %>
+        <div class="btn btn-default">
+          Page <%= @page %> of <%= @pages %>
+        </div>
         <% if @pages > @page %>
-            <a href="/drops?page=<%= @page+1 %>">Next >></a>
+            <a class="btn btn-default" href="/drops?page=<%= "#{@page+1}#{@show_all ? '&show_all=true' : ''}" %>">Next ></a>
         <% end %>
+    <% end %>
+    <% unless @show_all %>
+        <br/>
+        <br/>
+        <a href="/drops?page=<%= @page %>&show_all=true">Show Old Drops</a>
     <% end %>
   </div>
 

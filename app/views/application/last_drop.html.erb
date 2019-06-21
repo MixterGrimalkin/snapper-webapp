@@ -11,7 +11,9 @@
   </div>
 
   <div id="no-drop" style="display: none; margin: 20px">
-    <h1>No pending drops</h1>
+    <br/>
+    <br/>
+    <h1>Waiting for images....</h1>
   </div>
 
 
@@ -22,6 +24,9 @@
 
   $(function () {
     $("#go-latest").removeClass("btn-default").addClass("btn-primary");
+    $("#drop-image").click(function() {
+      window.location = $("#open-drop").attr("href");
+    });
     setInterval(function () {
       $.ajax({
         url: '/last_drop_image',

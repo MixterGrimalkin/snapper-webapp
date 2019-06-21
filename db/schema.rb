@@ -10,22 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190621080741) do
+ActiveRecord::Schema.define(version: 20190621161355) do
 
   create_table "drops", force: :cascade do |t|
     t.string "image_location"
     t.string "name"
     t.string "email"
-    t.string "twitter"
     t.string "gdpr_text"
     t.boolean "gdpr_consent"
     t.boolean "send_by_email"
     t.datetime "sent_at"
-    t.boolean "share_by_twitter"
-    t.boolean "tag_twitter_user"
-    t.datetime "shared_at"
-    t.string "status"
-    t.integer "primary_snap_id"
+    t.string "status", default: "PENDING"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -33,13 +28,6 @@ ActiveRecord::Schema.define(version: 20190621080741) do
   create_table "mailgun_configs", force: :cascade do |t|
     t.string "domain"
     t.string "api_key"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "snaps", force: :cascade do |t|
-    t.integer "drop_id"
-    t.string "filename"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

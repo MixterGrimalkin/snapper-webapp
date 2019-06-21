@@ -1,65 +1,89 @@
-<div style="padding:20px; text-align: center">
+<div style="text-align: center; margin: 50px">
 
   <% if @drop %>
       <div>
         <img src="<%= "../#{@drop.src}" %>"/>
       </div>
       <div class="container" style="margin-top: 50px">
-      <%= form_tag("/drop/#{@drop.id}/save", method: 'POST', class: 'form-horizontal') do %>
-          <div class="form-group">
-            <%= label_tag(:name, 'Name', class: 'control-label col-sm-3') %>
-            <div class="col-sm-7">
-              <%= text_field_tag(:name, @drop.name, class: 'form-control') %>
+        <%= form_tag("/drop/#{@drop.id}/save", method: 'POST', class: 'form-horizontal') do %>
+            <div class="form-group">
+              <%= label_tag(:name, 'Name', class: 'control-label col-sm-3') %>
+              <div class="col-sm-7">
+                <%= text_field_tag(:name, @drop.name, class: 'form-control') %>
+              </div>
             </div>
-          </div>
-          <div class="form-group">
-            <%= label_tag(:email, 'Email', class: 'control-label col-sm-3') %>
-            <div class="col-sm-7">
-              <%= text_field_tag(:email, @drop.email, class: 'form-control') %>
+            <div class="form-group">
+              <%= label_tag(:email, 'Email', class: 'control-label col-sm-3') %>
+              <div class="col-sm-7">
+                <%= text_field_tag(:email, @drop.email, id: 'email', class: 'form-control') %>
+              </div>
             </div>
-          </div>
-          <div class="form-group">
-            <%= label_tag(:send_by_email, 'Email this image to visitor', class: 'control-label col-sm-7') %>
-            <div class="col-sm-3" style="text-align: left; padding-top: 8px">
-              <%= check_box_tag(:send_by_email, @drop.send_by_email, class: 'form-control') %>
+            <div class="form-group">
+              <%= label_tag(:send_by_email, 'Email me this image', class: 'control-label col-sm-9', style: 'padding-top: 15px') %>
+              <div class="col-sm-1" style="text-align: left; padding-top: 8px">
+                <%= check_box_tag(:send_by_email, '1', @drop.send_by_email, id: 'send_by_email', class: 'form-control', onchange: 'onSendChanged()') %>
+              </div>
             </div>
-          </div>
+            <div class="form-group">
+              <%= hidden_field_tag(:gdpr_text, @gdpr) %>
+              <%= label_tag(:gdpr_consent, @gdpr, class: 'control-label col-sm-9') %>
+              <div class="col-sm-1" style="text-align: left; padding-top: 8px">
+                <%= check_box_tag(:gdpr_consent, '1', @drop.gdpr_consent, id: 'gdpr_consent', class: 'form-control') %>
+              </div>
+            </div>
             <br/>
             <br/>
             <br/>
-          <!--< label_tag(:twitter, 'Twitter:') %>-->
-          <!--< text_field_tag(:twitter, @drop.twitter) %>-->
-          <!--< label_tag(:share_by_twitter, 'Tweet this image') %>-->
-          <!--< check_box_tag(:share_by_twitter, @drop.share_by_twitter) %>-->
-          <!--< label_tag(:tag_twitter_user, 'Tag with Twitter username') %>-->
-          <!--< check_box_tag(:tag_twitter_user, @drop.tag_twitter_user) %>-->
-          <div class="form-group">
-            <%= button_tag('Discard', type: 'button', id: 'discard', class: 'btn btn-lg btn-danger') %>
-            <%= submit_tag('Save', class: 'btn btn-lg btn-success') %>
-      <% end %>
-      </div>
+            <div class="form-group">
+              <%= button_tag('Delete Image', type: 'button', id: 'discard', class: 'btn btn-lg btn-danger') %>
+              <%= submit_tag('Save', id: 'save', class: 'btn btn-lg btn-success') %>
+        <% end %>
+        </div>
   <% else %>
       <h1>No drop found</h1>
   <% end %>
-</div>
+  </div>
 
-<script>
+  <script>
 
-  $(function () {
-    $("#discard").click(function () {
-      if (window.confirm("Discard this image?")) {
-        $.ajax({
-          url: '/drop/<%= @drop.id %>/discard',
-          method: 'POST',
-          success: function (resp) {
-            window.location = '/drops'
-          },
-          error: function (resp) {
-            window.alert(resp);
-          }
-        });
+    <% if @drop %>
+
+    function onSendChanged() {
+      var $saveBtn = $("#save");
+      if ( $("#send_by_email").prop("checked") ) {
+        $saveBtn.val("Save and Send");
+      } else {
+        $saveBtn.val("Save");
       }
-    });
-  });
+    }
 
-</script>
+    $(function () {
+
+      <% if @drop.status!='PENDING' %>
+      $(".form-control").attr("disabled", true);
+      $("#save").hide();
+      <% else %>
+      onSendChanged();
+      <% end %>
+
+      $("#discard").click(function () {
+        if (window.confirm("Discard this image?")) {
+          $.ajax({
+            url: '/drop/<%= @drop.id %>/discard',
+            method: 'POST',
+            success: function (resp) {
+              window.location = '/drops'
+            },
+            error: function (resp) {
+              window.alert(resp);
+            }
+          });
+        }
+      });
+    });
+
+    <% else %>
+    $(function() { window.location = '/'; });
+    <% end %>
+
+  </script>

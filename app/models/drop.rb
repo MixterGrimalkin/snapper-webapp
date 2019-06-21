@@ -1,7 +1,5 @@
 class Drop < ApplicationRecord
 
-  has_many :snaps
-
   def src
     self.image_location ? self.image_location.gsub('public/', '') : ''
   end
@@ -15,11 +13,11 @@ class Drop < ApplicationRecord
   end
 
   def send_email
-    if (config = MailgunConfig.first)
+    if (config = MailgunConfig.first) && self.email && !self.email.empty?
       data = {}
-      data[:from] = "Greenpeace at Glastonbury <mailgun@#{config.domain}>"
+      data[:from] = 'Greenpeace at Glastonbury <info@greenpeace.org>'
       data[:to] = self.email
-      data[:subject] = "Thanks for dropping by!"
+      data[:subject] = 'Thanks for dropping by!'
       data[:text] = "Dear #{self.safe_name},\n\nWell done for riding the drop slide! Here's a picture of you enjoying it.\n\nGreenpeace Glastonbury Crew"
       # data[:html] = "<html>HTML version of the body</html>"
       data[:attachment] = [File.new(File.join(self.image_location.split('/')))]

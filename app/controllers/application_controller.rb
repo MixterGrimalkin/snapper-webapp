@@ -4,6 +4,8 @@ class ApplicationController < ActionController::Base
 
   PAGE_SIZE = 8
 
+  GDPR = 'I would like to receive emails from Greenpeace on how to get involved through petitions, campaigning, volunteering and donating.'
+
   def last_drop
     drop = Drop.where(status: 'PENDING').last
     @location = drop ? drop.src : ''
@@ -30,7 +32,7 @@ class ApplicationController < ActionController::Base
 
     drop_query = Drop.order(created_at: :desc)
 
-    unless params[:show_all] && params[:show_all].upcase == 'TRUE'
+    unless (@show_all = params[:show_all] && params[:show_all].upcase == 'TRUE')
       drop_query = drop_query.where(status: 'PENDING')
     end
 
@@ -38,7 +40,7 @@ class ApplicationController < ActionController::Base
 
     @drops = drop_query.offset((@page-1)*PAGE_SIZE).limit(PAGE_SIZE)
 
-    last_drop = Drop.last
+    last_drop = Drop.where(status: 'PENDING').last
     @last_drop_src = last_drop ? last_drop.src : ''
 
     render 'drops.html.erb'
@@ -47,31 +49,41 @@ class ApplicationController < ActionController::Base
   def drop
     begin
       @drop = Drop.find(params[:id])
+      @gdpr = GDPR
     rescue ActiveRecord::RecordNotFound
       render status: 404
     end
   end
 
   def save_drop
-    drop = Drop.find(params[:id])
-    drop.name = params[:name]
-    drop.email = params[:email]
-    drop.twitter = params[:twitter]
-    drop.send_by_email = params[:send_by_email]
-    drop.share_by_twitter = params[:share_by_twitter]
-    drop.tag_twitter_user = params[:tag_twitter_user]
+    if (drop = Drop.find(params[:id]))
 
-    drop.status = 'WAITING' if drop.status=='PENDING'
+      puts params
 
-    drop.save
+      drop.name = params[:name]
+      drop.email = params[:email]
+      drop.gdpr_consent = params[:gdpr_consent] || false
+      drop.gdpr_text = params[:gdpr_text]
+      drop.send_by_email = params[:send_by_email] || false
 
-    redirect_to "/drops"
+      if drop.status=='PENDING'
+        if drop.send_by_email
+          drop.status = 'WAITING'
+        else
+          drop.status = 'COMPLETE'
+        end
+      end
+
+      drop.save
+    end
+    redirect_to "/"
   end
 
   def discard_drop
-    drop = Drop.find(params[:id])
-    File.delete(drop.image_location)
-    drop.destroy
+    if (drop = Drop.find(params[:id]))
+      File.delete(drop.image_location)
+      drop.destroy
+    end
   end
 
 end
