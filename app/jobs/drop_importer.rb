@@ -2,7 +2,6 @@ require './config/boot'
 require './config/environment'
 
 def import_drops
-  puts 'Searching for new Drops....'
   count = 0
   Dir.glob('public/snaps/*.gif') do |file|
     unless Drop.find_by(image_location: file)
@@ -11,5 +10,4 @@ def import_drops
       count += 1
     end
   end
-  puts "Imported #{count} drops."
 end

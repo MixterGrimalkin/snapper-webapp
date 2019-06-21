@@ -3,7 +3,10 @@ scp * pi@192.168.42.51:snapper/webapp
 scp -r app pi@192.168.42.51:snapper/webapp
 scp -r bin pi@192.168.42.51:snapper/webapp
 scp -r config pi@192.168.42.51:snapper/webapp
-# database is skipped
+
+# you may want to exclude database!!!!!
+#scp -r db pi@192.168.42.51:snapper/webapp
+
 scp -r lib pi@192.168.42.51:snapper/webapp
 # log is skipped
 scp -r public pi@192.168.42.51:snapper/webapp

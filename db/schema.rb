@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190508143000) do
+ActiveRecord::Schema.define(version: 20190621080741) do
 
   create_table "drops", force: :cascade do |t|
     t.string "image_location"
@@ -26,6 +26,13 @@ ActiveRecord::Schema.define(version: 20190508143000) do
     t.datetime "shared_at"
     t.string "status"
     t.integer "primary_snap_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "mailgun_configs", force: :cascade do |t|
+    t.string "domain"
+    t.string "api_key"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

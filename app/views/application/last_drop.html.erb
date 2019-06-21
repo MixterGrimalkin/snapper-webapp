@@ -3,7 +3,16 @@
   <h1>Greenpeace Drop Slide</h1>
 
   <div id="connection-warning" style="display: none">ERROR CONNECTING TO WEBAPP!</div>
-  <img id="drop" src="<%= @location %>">
+
+  <div id="drop">
+    <img id="drop-image" src="<%= @location %>">
+  </div>
+
+  <div id="no-drop">
+    <h4>No pending drops</h4>
+  </div>
+
+  <button type="button" href="/drops">See all drops</button>
 
 </div>
 
@@ -16,11 +25,18 @@
         method: 'GET',
         success: function (resp) {
           $("#connection-warning").hide();
-          var $img = $("#drop");
-          $img.show();
+          var $img = $("#drop-image");
           if ($img.attr("src") != resp) {
             $img.attr("src", resp)
           }
+          if (resp == "") {
+            $("#no-drop").show();
+            $("#drop").hide();
+          } else {
+            $("#no-drop").hide();
+            $("#drop").show();
+          }
+          console.log(resp);
         },
         error: function (resp) {
           console.log("arsehole");
