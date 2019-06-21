@@ -5,16 +5,19 @@ class ApplicationController < ActionController::Base
   PAGE_SIZE = 8
 
   def last_drop
-    drop = Drop.last
+    drop = Drop.where(status: 'PENDING').last
     @location = drop ? drop.src : ''
     render 'last_drop.html.erb'
   end
 
   def last_drop_image
-    if (@drop = Drop.last)
-      render plain: @drop.src
+    if (@drop = Drop.where(status: 'PENDING').last)
+      render json: {
+          src: @drop.src,
+          id: @drop.id
+      }
     else
-      render plain: ''
+      render json: '[]'
     end
   end
 
@@ -58,7 +61,7 @@ class ApplicationController < ActionController::Base
     drop.share_by_twitter = params[:share_by_twitter]
     drop.tag_twitter_user = params[:tag_twitter_user]
 
-    drop.status = 'WAITING'
+    drop.status = 'WAITING' if drop.status=='PENDING'
 
     drop.save
 

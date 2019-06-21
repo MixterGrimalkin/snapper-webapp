@@ -1,12 +1,9 @@
 
-
-<div id="connection-warning" style="display: none">ERROR CONNECTING TO WEBAPP!</div>
-
 <div id="content">
 
   <div style="text-align: center">
 
-  <h1>Greenpeace Drop Slide</h1>
+    <div id="connection-warning" style="display: none; margin: 10px; color: red">ERROR CONNECTING TO WEBAPP!</div>
 
     <% @drops.each do |drop| %>
         <a href="/drop/<%= drop.id %>">
@@ -21,13 +18,17 @@
     <% end %>
   </div>
 
-  <div style="text-align: center">
-    <% if @page > 1 %>
-        <a class="btn" href="/drops?page=<%= @page-1 %>"><< Prev</a>
-    <% end %>
-    Page <%= @page %> of <%= @pages %>
-    <% if @pages > @page %>
-        <a href="/drops?page=<%= @page+1 %>">Next >></a>
+  <div style="text-align: center; margin: 20px">
+    <% if @drops.empty? %>
+      <p>No drops found</p>
+    <% else %>
+        <% if @page > 1 %>
+            <a class="btn" href="/drops?page=<%= @page-1 %>"><< Prev</a>
+        <% end %>
+        Page <%= @page %> of <%= @pages %>
+        <% if @pages > @page %>
+            <a href="/drops?page=<%= @page+1 %>">Next >></a>
+        <% end %>
     <% end %>
   </div>
 
@@ -37,6 +38,7 @@
   <% if @page==1 %>
 
   $(function () {
+    $("#go-all").removeClass("btn-default").addClass("btn-primary");
     setInterval(function () {
       $.ajax({
         url: '/last_drop_image',
@@ -44,7 +46,7 @@
         success: function (resp) {
           $("#connection-warning").hide();
           $("#content").show();
-          if (resp != '<%= @last_drop_src %>') {
+          if (resp.length!=0 && resp.src != '<%= @last_drop_src %>') {
             window.location.reload();
           }
         },

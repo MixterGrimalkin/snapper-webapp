@@ -37,6 +37,8 @@ gem 'jbuilder', '~> 2.5'
 
 gem 'jquery-rails'
 
+gem 'bootstrap-sass'
+
 # ImageMagick
 # gem 'rmagick', '~> 2.15', '>= 2.15.4'
 

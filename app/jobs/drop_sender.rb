@@ -8,6 +8,7 @@ def process_drops
       if drop.send_by_email
         puts "Sending email to #{drop.email}"
         drop.send_email
+        drop.sent_at = DateTime.now
       end
       drop.status = 'COMPLETE'
       drop.save
