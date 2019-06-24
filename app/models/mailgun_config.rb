@@ -1,0 +1,2 @@
+class MailgunConfig < ApplicationRecord
+end
