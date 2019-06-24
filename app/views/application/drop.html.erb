@@ -25,6 +25,12 @@
               </div>
             </div>
             <div class="form-group">
+              <%= label_tag(:happy_to_share, 'I am happy for Greenpeace to share this image on social media', class: 'control-label col-sm-9', style: 'padding-top: 15px') %>
+              <div class="col-sm-1" style="text-align: left; padding-top: 8px">
+                <%= check_box_tag(:happy_to_share, '1', @drop.happy_to_share, id: 'happy_to_share', class: 'form-control') %>
+              </div>
+            </div>
+            <div class="form-group">
               <%= hidden_field_tag(:gdpr_text, @gdpr) %>
               <%= label_tag(:gdpr_consent, @gdpr, class: 'control-label col-sm-9') %>
               <div class="col-sm-1" style="text-align: left; padding-top: 8px">

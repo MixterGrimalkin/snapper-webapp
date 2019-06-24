@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190621161355) do
+ActiveRecord::Schema.define(version: 20190624161704) do
 
   create_table "drops", force: :cascade do |t|
     t.string "image_location"
@@ -23,6 +23,7 @@ ActiveRecord::Schema.define(version: 20190621161355) do
     t.string "status", default: "PENDING"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "happy_to_share", default: false
   end
 
   create_table "mailgun_configs", force: :cascade do |t|

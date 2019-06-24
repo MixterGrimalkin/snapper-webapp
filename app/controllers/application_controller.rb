@@ -65,6 +65,7 @@ class ApplicationController < ActionController::Base
       drop.gdpr_consent = params[:gdpr_consent] || false
       drop.gdpr_text = params[:gdpr_text]
       drop.send_by_email = params[:send_by_email] || false
+      drop.happy_to_share = params[:happy_to_share] || false
 
       if drop.status=='PENDING'
         if drop.send_by_email
@@ -76,7 +77,7 @@ class ApplicationController < ActionController::Base
 
       drop.save
     end
-    redirect_to "/"
+    redirect_to '/'
   end
 
   def discard_drop
