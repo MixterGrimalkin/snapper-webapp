@@ -72,7 +72,7 @@
             url: '/drop/<%= @drop.id %>/discard',
             method: 'POST',
             success: function (resp) {
-              window.location = '/drops'
+              window.location = '/'
             },
             error: function (resp) {
               window.alert(resp);

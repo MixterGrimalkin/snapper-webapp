@@ -20,7 +20,7 @@
 
   <div style="text-align: center; margin: 20px">
     <% if @drops.empty? %>
-      <p>No drops found</p>
+      <p>No drops</p>
     <% else %>
         <% if @page > 1 %>
             <a class="btn btn-default" href="/drops?page=<%= "#{@page-1}#{@show_all ? '&show_all=true' : ''}" %>">< Prev</a>
