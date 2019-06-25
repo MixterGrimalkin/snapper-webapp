@@ -14,6 +14,9 @@ def process_drops
       drop.save
       puts 'Done'
     rescue => e
+      drop.email_error = e.message
+      drop.status = 'FAILED'
+      drop.save
       puts "Error: #{e.message}"
     end
   end

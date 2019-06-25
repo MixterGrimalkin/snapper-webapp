@@ -39,6 +39,8 @@ gem 'jquery-rails'
 
 gem 'bootstrap-sass'
 
+gem 'smarter_csv'
+
 # ImageMagick
 # gem 'rmagick', '~> 2.15', '>= 2.15.4'
 
