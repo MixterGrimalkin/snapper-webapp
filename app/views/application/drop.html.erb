@@ -65,6 +65,12 @@
 
     $(function () {
 
+      $("form").on("keypress", function (e) {
+        if (e.keyCode == 13) {
+          return false;
+        }
+      });
+
       <% if @drop.status!='PENDING' %>
       $(".form-control").attr("disabled", true);
       $("#save").hide();

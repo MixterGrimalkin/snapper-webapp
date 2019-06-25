@@ -9,7 +9,7 @@ scp -r config pi@192.168.42.51:snapper/webapp
 
 scp -r lib pi@192.168.42.51:snapper/webapp
 # log is skipped
-scp -r public pi@192.168.42.51:snapper/webapp
+# scp -r public pi@192.168.42.51:snapper/webapp
 scp -r test pi@192.168.42.51:snapper/webapp
 # tmp is skipped
 scp -r vendor pi@192.168.42.51:snapper/webapp
